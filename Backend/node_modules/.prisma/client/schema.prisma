@@ -44,6 +44,7 @@ model User {
 
   loginSessions LoginSession[]
   bloodRequests RequestBlood[]
+  refreshToken  RefreshToken?
 
   @@map("users")
 }
@@ -85,4 +86,14 @@ model RequestBlood {
   notes       String?
 
   @@map("blood_requests")
+}
+
+model RefreshToken {
+  rtoken    String   @db.Text
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  deviceId  String?
+  createdAt DateTime @default(now())
+
+  @@map("refreshSession")
 }

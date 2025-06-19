@@ -1,30 +1,73 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const REFRESH_SECRET =
+  process.env.JWT_REFRESH_SECRET || "your_jwt_refresh_secret";
 
 export interface AuthRequest extends Request {
   user?: any;
 }
 
-export function authenticateToken(
+function generateAccessToken(payload: object) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "1m" });
+}
+
+export async function authenticateToken(
   req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {
   const token = req.cookies?.auth_token;
+  const refreshToken = req.cookies?.refresh_token;
 
-  if (!token) {
-    res.status(401).json({ message: "No token found, authorization denied" });
-    return;
+  if (!token && !refreshToken) {
+    return res
+      .status(401)
+      .json({ message: "No token found, authorization denied" });
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
-    next();
+    return next();
   } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token" });
-    return;
+    console.log("Access token expired or invalid:", (error as Error)?.message);
+
+    try {
+      const decodedRefresh = jwt.verify(refreshToken, REFRESH_SECRET) as any;
+
+      const stored = await prisma.refreshToken.findUnique({
+        where: { userId: decodedRefresh.id },
+      });
+
+      if (!stored || stored.rtoken !== refreshToken) {
+        return res.status(401).json({ message: "Invalid refresh token" });
+      }
+
+      const newAccessToken = generateAccessToken({
+        id: decodedRefresh.id,
+        name: decodedRefresh.name,
+        email: decodedRefresh.email,
+      });
+
+      res.cookie("auth_token", newAccessToken, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+        maxAge: 10 * 1000, // 10 seconds
+        path: "/",
+      });
+
+      req.user = jwt.decode(newAccessToken);
+      return next();
+    } catch (err) {
+      return res
+        .status(403)
+        .json({ message: "Refresh token expired or invalid" });
+    }
   }
 }

@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 const prisma = new PrismaClient();
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const JWT_REFRESH_SECRET =
+  process.env.JWT_REFRESH_SECRET || "your_jwt_refresh_secret";
 
 export const PrismaSqlModels = {
   async createUser(
@@ -35,8 +37,8 @@ export const PrismaSqlModels = {
   async checkUserCredentials(email: string, password: string) {
     return await prisma.user.findFirst({
       where: {
-        email: email,
-        password: password,
+        email,
+        password,
       },
     });
   },
@@ -44,23 +46,44 @@ export const PrismaSqlModels = {
   async login(email: string, password: string) {
     const user = await this.checkUserCredentials(email, password);
     if (!user) {
-      throw new Error("Invalid email or password");
+      throw new Error("Invalid email or passwordjhbjhgb");
     }
 
     const { id, name } = user;
 
-    const token = jwt.sign({ id, name, email }, JWT_SECRET, {
-      expiresIn: 10 * 60,
+    const accessToken = jwt.sign({ id, name, email }, JWT_SECRET, {
+      expiresIn: 2,
     });
+
+    const refreshToken = jwt.sign({ id, name, email }, JWT_REFRESH_SECRET, {
+      expiresIn: 20, // 20 seconds,
+    });
+
+    await prisma.refreshToken.upsert({
+      where: { userId: id },
+      update: {
+        rtoken: refreshToken,
+        createdAt: new Date(),
+      },
+      create: {
+        rtoken: refreshToken,
+        userId: id,
+      },
+    });
+
     await prisma.loginSession.create({
       data: {
         id: randomUUID(),
         userId: id,
         loggedInAt: new Date(),
-        success: Boolean(token),
+        success: true,
       },
     });
 
-    return { token, user: { id, name, email } };
+    return {
+      accessToken,
+      refreshToken,
+      user: { id, name, email },
+    };
   },
 };
