@@ -8,5 +8,5 @@ import { authenticateToken } from "../middleware/auth";
 const router = express.Router();
 
 router.post("/", CreateDonorController);
-router.get("/search", authenticateToken, SearchDonorController);
+router.get("/search", SearchDonorController);
 export default router;

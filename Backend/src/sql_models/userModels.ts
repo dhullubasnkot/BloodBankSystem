@@ -56,7 +56,7 @@ export const PrismaSqlModels = {
     });
 
     const refreshToken = jwt.sign({ id, name, email }, JWT_REFRESH_SECRET, {
-      expiresIn: 20, // 20 seconds,
+      expiresIn: 20000000000, // 20 seconds,
     });
 
     await prisma.refreshToken.upsert({

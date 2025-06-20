@@ -45,7 +45,8 @@ export async function authenticateToken(
       });
 
       if (!stored || stored.rtoken !== refreshToken) {
-        return res.status(401).json({ message: "Invalid refresh token" });
+        res.status(401).json({ message: "Invalid refresh token" });
+        return;
       }
 
       const newAccessToken = generateAccessToken({
@@ -58,7 +59,7 @@ export async function authenticateToken(
         httpOnly: true,
         secure: false,
         sameSite: "lax",
-        maxAge: 10 * 1000, // 10 seconds
+        maxAge: 10 * 1000 ,
         path: "/",
       });
 
