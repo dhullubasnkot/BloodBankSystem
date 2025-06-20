@@ -42,4 +42,7 @@ export const PrismaDonorModels = {
       },
     });
   },
+  async getAllListedBloodDonors() {
+    return prisma.donor.findMany();
+  },
 };

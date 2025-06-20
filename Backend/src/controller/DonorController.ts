@@ -45,3 +45,16 @@ export async function SearchDonorController(req: Request, res: Response) {
     console.log("Error Searching Donors:", error);
   }
 }
+
+export async function GetAllListedBloodDonorsController(
+  req: Request,
+  res: Response
+) {
+  try {
+    const donors = await PrismaDonorModels.getAllListedBloodDonors();
+    res.status(200).json(donors);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch all listed blood donors" });
+    console.error("Error fetching all listed blood donors:", error);
+  }
+}
