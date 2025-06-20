@@ -1,13 +1,18 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:3000/donor";
-
-export const getAllDonors = async () => {
+export default async function GetAllDonors() {
   try {
-    const response = await axios.get(API_URL);
-    return response.data;
+    const response = await fetch("http://localhost:3000/donor", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch Donors");
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error("Error fetching donors:", error);
+    console.error("Error fetching Donors:", error.message);
     throw error;
   }
-};
+}
