@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 import express from "express";
+import { bloodRequqestRouoter } from "./routes/bloodRequestRoutes";
 
 const app = express();
 const PORT = process.env.ENV_PORT;
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/user", userRoutes);
 app.use("/donor", DonorRoutes);
+app.use("/bloodrequest", bloodRequqestRouoter);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
