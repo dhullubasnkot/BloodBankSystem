@@ -16,7 +16,7 @@ export default function Navbar() {
           <a href="#" className="hover:text-red-600 transition">
             About Us
           </a>
-          <a href="#" className="hover:text-red-600 transition">
+          <a href="findblood" className="hover:text-red-600 transition">
             Find Blood
           </a>
           <a href="#" className="hover:text-red-600 transition">

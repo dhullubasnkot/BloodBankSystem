@@ -3,14 +3,17 @@ import "./App.css";
 import HeroSection from "./pages/hero";
 import OurCollobaration from "./pages/OurCollabration";
 import OurMission from "./pages/ourMission";
+import AppRoutes from "./routes/routes";
 
 function App() {
   return (
     <>
       {/* <Navbar /> */}
-      <HeroSection />
-      <OurMission />
-      <OurCollobaration />
+      <AppRoutes>
+        <HeroSection />
+        <OurMission />
+        <OurCollobaration />
+      </AppRoutes>
     </>
   );
 }
