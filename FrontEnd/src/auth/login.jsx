@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import LoginUser from "../api/users/loginuser";
 
 export default function Login({ onSwitchToSignup }) {
+  let deviceId = localStorage.getItem("deviceId");
   const [form, setForm] = useState({
     email: "",
     password: "",
+    deviceId: deviceId,
   });
 
   const [message, setMessage] = useState("");
