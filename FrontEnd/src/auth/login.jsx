@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import LoginUser from "../api/users/loginuser";
-
 export default function Login({ onSwitchToSignup }) {
+  const navigate = useNavigate();
   let deviceId = localStorage.getItem("deviceId");
   const [form, setForm] = useState({
     email: "",
@@ -23,6 +24,7 @@ export default function Login({ onSwitchToSignup }) {
       });
       console.log("Attempting to log in with:", form);
       setMessage("Login successful!");
+      navigate("/");
       setForm({
         email: "",
         password: "",
@@ -31,7 +33,6 @@ export default function Login({ onSwitchToSignup }) {
       setMessage("Login failed: " + (err.message || "Unknown error"));
     }
   }
-
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-center text-red-600">
