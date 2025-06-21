@@ -1,8 +1,11 @@
+import { getOrCreateDeviceId } from "../../utils/deviceId";
+
 const LoginUser = async (formData) => {
+  const getDevicesId = getOrCreateDeviceId();
   const response = await fetch("http://localhost:3000/user/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
+    body: JSON.stringify(formData, getDevicesId),
     credentials: "include",
   });
 
