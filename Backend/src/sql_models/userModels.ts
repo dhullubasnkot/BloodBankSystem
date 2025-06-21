@@ -8,6 +8,9 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 const JWT_REFRESH_SECRET =
   process.env.JWT_REFRESH_SECRET || "your_jwt_refresh_secret";
 
+const ACCESS_EXPIRES_IN = "2m"; // 2 minutes
+const REFRESH_EXPIRES_IN = "7d"; // 7 days
+
 export const PrismaSqlModels = {
   async createUser(
     name: string,
@@ -36,47 +39,48 @@ export const PrismaSqlModels = {
 
   async checkUserCredentials(email: string, password: string) {
     return await prisma.user.findFirst({
-      where: {
-        email,
-        password,
-      },
+      where: { email, password },
     });
   },
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, deviceId?: string) {
     const user = await this.checkUserCredentials(email, password);
-    if (!user) {
-      throw new Error("Invalid email or passwordjhbjhgb");
-    }
+    if (!user) throw new Error("Invalid email or password");
 
     const { id, name } = user;
 
-    const accessToken = jwt.sign({ id, name, email }, JWT_SECRET, {
-      expiresIn: 2,
-    });
+    // Provide a default value for deviceId if not supplied
+    const resolvedDeviceId = deviceId || "unknown_device";
 
-    const refreshToken = jwt.sign({ id, name, email }, JWT_REFRESH_SECRET, {
-      expiresIn: 200000, // 20 seconds,
-    });
+    const accessToken = jwt.sign(
+      { id, name, email, deviceId: resolvedDeviceId, type: "access" },
+      JWT_SECRET,
+      { expiresIn: ACCESS_EXPIRES_IN }
+    );
 
-    await prisma.refreshToken.upsert({
+    const refreshToken = jwt.sign(
+      {
+        id,
+        name,
+        email,
+        type: "refresh",
+        jti: randomUUID(),
+        deviceId: resolvedDeviceId, // Ensures unique token
+      },
+      JWT_REFRESH_SECRET,
+      { expiresIn: REFRESH_EXPIRES_IN }
+    );
+
+    // 🔄 Always delete old refresh token first
+    await prisma.refreshToken.deleteMany({
       where: { userId: id },
-      update: {
-        rtoken: refreshToken,
-        createdAt: new Date(),
-      },
-      create: {
-        rtoken: refreshToken,
-        userId: id,
-      },
     });
 
-    await prisma.loginSession.create({
+    await prisma.refreshToken.create({
       data: {
-        id: randomUUID(),
+        rtoken: refreshToken,
         userId: id,
-        loggedInAt: new Date(),
-        success: true,
+        deviceId: resolvedDeviceId,
       },
     });
 
