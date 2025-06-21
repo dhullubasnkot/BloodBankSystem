@@ -25,10 +25,12 @@ export async function CreateUserController(req: Request, res: Response) {
 
 export async function loginController(req: Request, res: Response) {
   try {
-    const { email, password } = req.body;
+    const { email, password, deviceId } = req.body;
+
     const { accessToken, refreshToken, user } = await PrismaSqlModels.login(
       email,
-      password
+      password,
+      deviceId
     );
 
     res.cookie("auth_token", accessToken, {
@@ -36,6 +38,7 @@ export async function loginController(req: Request, res: Response) {
       secure: false,
       sameSite: "lax",
       path: "/",
+      maxAge: 2 * 60 * 1000,
     });
 
     res.cookie("refresh_token", refreshToken, {
@@ -43,11 +46,12 @@ export async function loginController(req: Request, res: Response) {
       secure: false,
       sameSite: "lax",
       path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
     res.status(200).json({ message: "Login successful", user });
   } catch (error: any) {
     console.error("Error during login:", error);
     res.status(401).json({ message: "Invalid Email Or Password" });
-    console.log(error.message);
   }
 }
