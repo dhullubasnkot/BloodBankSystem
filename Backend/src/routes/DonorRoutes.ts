@@ -10,5 +10,5 @@ const router = express.Router();
 
 router.post("/", CreateDonorController);
 router.get("/search", SearchDonorController);
-router.get("/", GetAllListedBloodDonorsController);
+router.get("/",authenticateToken, GetAllListedBloodDonorsController);
 export default router;
