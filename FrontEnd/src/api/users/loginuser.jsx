@@ -13,6 +13,12 @@ const LoginUser = async (formData) => {
   if (!response.ok) {
     throw new Error(result.message || "Signup failed");
   }
+  const user = result.user;
+
+  localStorage.setItem("id", user.id);
+  localStorage.setItem("userId", user.id);
+  localStorage.setItem("username", user.name);
+  localStorage.setItem("email", user.email);
 
   return result;
 };
