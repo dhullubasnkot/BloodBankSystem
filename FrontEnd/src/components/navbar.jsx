@@ -2,13 +2,15 @@ export default function Navbar() {
   return (
     <nav className="w-full px-10 pt-6">
       <div className="max-w-[1316px] mx-auto flex items-center justify-between h-[71px]">
-        <div className="h-[100px] w-[100px] mb-2">
-          <img
-            src="/Logooo.png"
-            alt="logo"
-            className="h-full w-full object-contain"
-          />
-        </div>
+        <a href="/">
+          <div className="h-[100px] w-[100px] mb-2">
+            <img
+              src="/Logooo.png"
+              alt="logo"
+              className="h-full w-full object-contain"
+            />
+          </div>
+        </a>
         <div className="flex gap-10 font-medium text-[16px]">
           <a href="#" className=" hover:text-red-600 transition ">
             Home
@@ -19,7 +21,7 @@ export default function Navbar() {
           <a href="/findblood" className="hover:text-red-600 transition">
             Find Blood
           </a>
-          <a href="#" className="hover:text-red-600 transition">
+          <a href="/BeaDonor" className="hover:text-red-600 transition">
             Register Now
           </a>
           <a href="/Register">
