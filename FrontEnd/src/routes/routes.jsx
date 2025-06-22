@@ -6,6 +6,7 @@ import OurCollobaration from "../pages/OurCollabration";
 import OurMission from "../pages/ourMission";
 import Navbar from "../components/navbar";
 import Register from "../auth/signup";
+import RegisterAsDonor from "../pages/RegisterAsDonor";
 
 const AppRoutes = () => (
   <>
@@ -15,6 +16,7 @@ const AppRoutes = () => (
         <Route path="/ourmission" element={<OurMission />} />
         <Route path="/collaboration" element={<OurCollobaration />} />
         <Route path="/findblood" element={<FindBlood />} />
+        <Route path="/BeaDonor" element={<RegisterAsDonor />} />
         <Route path="/Register" element={<Register />} />
       </Routes>
     </Router>
