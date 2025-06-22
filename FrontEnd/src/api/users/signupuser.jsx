@@ -6,9 +6,19 @@ const signupUser = async (formData) => {
   });
 
   const result = await response.json();
+  console.log("Signup response:", result);
+
   if (!response.ok) {
     throw new Error(result.message || "Signup failed");
   }
+
+  // IMPORTANT: user data is inside result.user
+  // const user = result.user;
+
+  // localStorage.setItem("id", user.id);
+  // localStorage.setItem("userId", user.id);
+  // localStorage.setItem("username", user.name);
+  // localStorage.setItem("email", user.email);
 
   return result;
 };
