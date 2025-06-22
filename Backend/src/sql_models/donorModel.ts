@@ -43,6 +43,14 @@ export const PrismaDonorModels = {
     });
   },
   async getAllListedBloodDonors() {
-    return prisma.donor.findMany();
+    return prisma.donor.findMany({
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   },
 };
