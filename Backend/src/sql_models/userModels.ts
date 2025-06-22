@@ -8,8 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 const JWT_REFRESH_SECRET =
   process.env.JWT_REFRESH_SECRET || "your_jwt_refresh_secret";
 
-const ACCESS_EXPIRES_IN = "2m"; // 2 minutes
-const REFRESH_EXPIRES_IN = "7d"; // 7 days
+const ACCESS_EXPIRES_IN = "2m";
+const REFRESH_EXPIRES_IN = "7d";
 
 export const PrismaSqlModels = {
   async createUser(
@@ -49,7 +49,6 @@ export const PrismaSqlModels = {
 
     const { id, name } = user;
 
-    // Provide a default value for deviceId if not supplied
     const resolvedDeviceId = deviceId || "unknown_device";
 
     const accessToken = jwt.sign(
@@ -65,13 +64,12 @@ export const PrismaSqlModels = {
         email,
         type: "refresh",
         jti: randomUUID(),
-        deviceId: resolvedDeviceId, // Ensures unique token
+        deviceId: resolvedDeviceId,
       },
       JWT_REFRESH_SECRET,
       { expiresIn: REFRESH_EXPIRES_IN }
     );
 
-    // 🔄 Always delete old refresh token first
     await prisma.refreshToken.deleteMany({
       where: { userId: id },
     });
