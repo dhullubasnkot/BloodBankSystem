@@ -55,3 +55,24 @@ export async function loginController(req: Request, res: Response) {
     res.status(401).json({ message: "Invalid Email Or Password" });
   }
 }
+
+export async function LogoutController(req: Request, res: Response) {
+  try {
+    res.clearCookie("auth_token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+    });
+    res.clearCookie("refresh_token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+    });
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error: any) {
+    console.error("Error during logout:", error);
+    res.status(500).json({ message: "Failed to logout" });
+  }
+}

@@ -88,4 +88,14 @@ export const PrismaSqlModels = {
       user: { id, name, email },
     };
   },
+
+  async LogoutModel(userId: string, deviceId?: string) {
+    await prisma.refreshToken.deleteMany({
+      where: {
+        userId: userId,
+        deviceId: deviceId || "unknown_device",
+      },
+    });
+    return { message: "Logout successful" };
+  },
 };
