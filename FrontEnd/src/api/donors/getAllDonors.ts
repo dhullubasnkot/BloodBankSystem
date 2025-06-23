@@ -1,6 +1,8 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default async function GetAllDonors() {
   try {
-    const response = await fetch("http://localhost:3000/donor", {
+    const response = await fetch(`${API_URL}donor`, {
       method: "GET",
       credentials: "include",
     });

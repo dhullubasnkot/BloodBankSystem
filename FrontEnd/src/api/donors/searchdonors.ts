@@ -1,5 +1,6 @@
-const CreateDonors = async (formData) => {
-  const response = await fetch("http://localhost:3000/donor/search", {
+const API_URL = import.meta.env.VITE_API_URL;
+const SearchDonor = async (formData) => {
+  const response = await fetch(`${API_URL}donor/search`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -17,4 +18,4 @@ const CreateDonors = async (formData) => {
   return result;
 };
 
-export default CreateDonors;
+export default SearchDonor;
