@@ -1,8 +1,9 @@
+const API_URL = import.meta.env.VITE_API_URL;
 import { getOrCreateDeviceId } from "../../utils/deviceId";
 
 const LoginUser = async (formData) => {
   const getDevicesId = getOrCreateDeviceId();
-  const response = await fetch("http://localhost:3000/user/login", {
+  const response = await fetch(`${API_URL}user/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData, getDevicesId),
