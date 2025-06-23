@@ -7,6 +7,7 @@ const CreateDonors = async (formData) => {
     credentials: "include",
     body: JSON.stringify(formData),
   });
+  localStorage.setItem("isDonor", "true");
 
   const result = await response.json();
 
