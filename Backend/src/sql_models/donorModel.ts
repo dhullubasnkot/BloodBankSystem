@@ -44,13 +44,13 @@ export const PrismaDonorModels = {
   },
   async getAllListedBloodDonors() {
     return prisma.donor.findMany({
-      // skip: 0,
-      // take: 5,
-      // where: {
-      //   district: {
-      //     contains: "Butwal",
-      //   },
-      // },
+      skip: 0,
+      take: 5,
+      where: {
+        district: {
+          contains: "Butwal",
+        },
+      },
       include: {
         user: {
           select: {
