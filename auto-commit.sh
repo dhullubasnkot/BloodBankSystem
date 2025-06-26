@@ -1,24 +1,35 @@
 #!/bin/bash
 
-# Exclude unwanted paths like node_modules
+# Move to the root of the Git repo
+cd "$(git rev-parse --show-toplevel)"
+
 EXCLUDE_PATTERN="node_modules"
 
-# Get list of modified or untracked files
+# Get a list of modified and untracked files
 files=$(git status --porcelain | grep -E '^( M|\?\?)' | cut -c4-)
 
 for file in $files; do
-  # Skip if file doesn't exist or is in node_modules
-  if [[ ! -e "$file" || "$file" == *"$EXCLUDE_PATTERN"* ]]; then
+  # Skip non-existing files or excluded directories
+  if [[ ! -e "$file" || "$file" =~ $EXCLUDE_PATTERN ]]; then
     echo "❌ Skipping: $file"
     continue
   fi
 
+  # Check if there are actual diff changes
+  if git diff --quiet "$file"; then
+    echo "⚪ No real change in: $file"
+    continue
+  fi
+
   git add "$file"
-  git commit -m "New update : $file"
+
+  # Use filename as the commit message
+  filename=$(basename "$file")
+  git commit -m "update($filename): changes made in $filename"
 done
 
 # Push to current branch
 branch=$(git rev-parse --abbrev-ref HEAD)
 git push origin "$branch"
 
-echo "✅ All valid files committed and pushed to '$branch'."
+echo "✅ Only real changes committed and pushed to '$branch'."
