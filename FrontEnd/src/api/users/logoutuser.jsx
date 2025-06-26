@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
 export default async function LogoutUser() {
-  const response = await fetch(`${API_URL}user/logout`, {
+  const response = await fetch("http://localhost:3000/user/logout", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
