@@ -1,7 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL;
-
 const CreateDonors = async (formData) => {
-  const response = await fetch(`${API_URL}donor`, {
+  const response = await fetch("http://localhost:3000/donor", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
