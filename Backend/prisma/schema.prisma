@@ -46,6 +46,8 @@ model User {
   bloodRequests RequestBlood[]
   refreshToken  RefreshToken?
 
+  receivedDonations DonationRecord[] @relation("UserAsReceiver")
+
   @@map("users")
 }
 
@@ -59,6 +61,8 @@ model Donor {
   lastDonated DateTime?
   available   Boolean    @default(true)
   notes       String?
+
+  donationRecords DonationRecord[] @relation("DonorDonations")
 
   @@map("donors")
 }
@@ -85,6 +89,8 @@ model RequestBlood {
   fulfilledAt DateTime?
   notes       String?
 
+  donationRecords DonationRecord[]
+
   @@map("blood_requests")
 }
 
@@ -96,4 +102,20 @@ model RefreshToken {
   createdAt DateTime @default(now())
 
   @@map("refreshSession")
+}
+
+model DonationRecord {
+  id          String   @id @default(uuid())
+  donorId     String
+  requesterId String
+  requestId   String?
+  donatedAt   DateTime @default(now())
+  location    String?
+  notes       String?
+
+  donor        Donor         @relation("DonorDonations", fields: [donorId], references: [id])
+  requester    User          @relation("UserAsReceiver", fields: [requesterId], references: [id])
+  bloodRequest RequestBlood? @relation(fields: [requestId], references: [id])
+
+  @@map("donation_records")
 }
