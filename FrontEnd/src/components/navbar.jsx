@@ -33,6 +33,7 @@ export default function Navbar() {
               className="h-full w-full object-contain"
             />
           </div>
+          {/* navbar */}
         </a>
         <div className="flex gap-10 font-medium text-[16px]">
           <a href="/" className="hover:text-red-600 transition">
