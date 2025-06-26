@@ -38,10 +38,13 @@ export default function Navbar() {
           <a href="/" className="hover:text-red-600 transition">
             Home
           </a>
-          <a href="#" className="hover:text-red-600 transition">
-            About Us
+          <a href="/RequestBlood" className="hover:text-red-600 transition">
+            Request Blood
           </a>
-          <a href="/findblood" className="hover:text-red-600 transition">
+          <a
+            href="/DonorandRequetedBlood"
+            className="hover:text-red-600 transition"
+          >
             Find Blood
           </a>
 
