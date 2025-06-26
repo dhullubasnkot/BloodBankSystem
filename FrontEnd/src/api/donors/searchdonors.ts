@@ -1,6 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL;
 const SearchDonor = async (formData) => {
-  const response = await fetch(`${API_URL}donor/search`, {
+  const response = await fetch("http://localhost:3000/donor/search", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
