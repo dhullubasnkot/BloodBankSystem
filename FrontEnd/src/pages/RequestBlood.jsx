@@ -13,6 +13,8 @@ const bloodGroups = [
 const id = localStorage.getItem("id");
 const RequestBloodForm = () => {
   const [form, setForm] = useState({
+    name: "",
+    phone: "",
     userId: id,
     bloodGroup: "",
     district: "",
@@ -60,6 +62,20 @@ const RequestBloodForm = () => {
             </option>
           ))}
         </select>
+        <input
+          name="name"
+          placeholder="Name"
+          required
+          className="w-full border p-2"
+          onChange={handleChange}
+        />
+        <input
+          name="phone"
+          placeholder="Phone"
+          required
+          className="w-full border p-2"
+          onChange={handleChange}
+        />
         <input
           name="district"
           placeholder="District"
