@@ -27,11 +27,8 @@ export async function loginController(req: Request, res: Response) {
   try {
     const { email, password, deviceId } = req.body;
 
-    const { accessToken, refreshToken, user } = await PrismaSqlModels.login(
-      email,
-      password,
-      deviceId
-    );
+    const { accessToken, refreshToken, user, donorId } =
+      await PrismaSqlModels.login(email, password, deviceId);
 
     res.cookie("auth_token", accessToken, {
       httpOnly: true,
@@ -49,7 +46,11 @@ export async function loginController(req: Request, res: Response) {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.status(200).json({ message: "Login successful", user });
+    res.status(200).json({
+      message: "Login successful",
+      user,
+      donorId, // include donorId here
+    });
   } catch (error: any) {
     console.error("Error during login:", error);
     res.status(401).json({ message: "Invalid Email Or Password" });
