@@ -16,6 +16,7 @@ const AppRoutes = () => (
       <Navbar />
       <Routes>
         <Route path="/" element={<HeroSection />} />
+
         <Route path="/DonorandRequetedBlood" element={<FindBloodDashboard />} />
         <Route path="/findblood" element={<FindBlood />} />
         <Route path="/BeaDonor" element={<RegisterAsDonor />} />
