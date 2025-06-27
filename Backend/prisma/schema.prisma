@@ -80,6 +80,8 @@ model LoginSession {
 model RequestBlood {
   id          String        @id @default(uuid())
   userId      String
+  name        String
+  phone       String
   user        User          @relation(fields: [userId], references: [id])
   bloodGroup  BloodGroup
   district    String
