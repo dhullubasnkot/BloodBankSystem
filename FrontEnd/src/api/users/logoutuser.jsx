@@ -15,6 +15,7 @@ export default async function LogoutUser() {
   localStorage.removeItem("email");
   localStorage.removeItem("deviceId");
   localStorage.removeItem("isDonor");
+  localStorage.removeItem("Donor_id");
 
   return { message: "Logout successful" };
 }
