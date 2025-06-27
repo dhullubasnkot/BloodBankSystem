@@ -20,7 +20,6 @@ const FindBloodDashboard = () => {
 
   return (
     <>
-      <Navbar />
       <div className="flex">
         <SidebarLayout activeTab={activeTab} setActiveTab={setActiveTab} />
         <div className="flex-1 p-4">{renderTab()}</div>
