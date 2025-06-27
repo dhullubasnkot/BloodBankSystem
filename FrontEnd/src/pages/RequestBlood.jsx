@@ -10,12 +10,14 @@ const bloodGroups = [
   "O_POS",
   "O_NEG",
 ];
+
 const id = localStorage.getItem("id");
+
 const RequestBloodForm = () => {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    userId: id,
+    userId: id || "",
     bloodGroup: "",
     district: "",
     city: "",
@@ -23,7 +25,7 @@ const RequestBloodForm = () => {
   });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e) => {
@@ -39,6 +41,17 @@ const RequestBloodForm = () => {
 
       const data = await res.json();
       alert(data.message || "Blood request sent!");
+      if (res.ok) {
+        setForm({
+          name: "",
+          phone: "",
+          userId: id || "",
+          bloodGroup: "",
+          district: "",
+          city: "",
+          notes: "",
+        });
+      }
     } catch (err) {
       console.error(err);
       alert("Failed to send request");
@@ -46,61 +59,73 @@ const RequestBloodForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-xl font-semibold mb-4">🩸 Request Blood</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-lg mx-auto p-8 bg-white shadow-xl rounded-2xl mt-10">
+      <h2 className="text-2xl font-bold mb-6 text-red-600 flex items-center gap-2">
+        🩸 Request Blood
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
         <select
           name="bloodGroup"
+          value={form.bloodGroup}
           required
-          className="w-full border p-2"
           onChange={handleChange}
+          className="w-full border border-red-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           <option value="">Select Blood Group</option>
           {bloodGroups.map((bg) => (
             <option key={bg} value={bg}>
-              {bg.replace("_", "+").replace("POS", "+").replace("NEG", "-")}
+              {bg.replace("_POS", "+").replace("_NEG", "-").replace("_", "")}
             </option>
           ))}
         </select>
+
         <input
           name="name"
-          placeholder="Name"
+          value={form.name}
+          placeholder="Full Name"
           required
-          className="w-full border p-2"
           onChange={handleChange}
+          className="w-full border border-red-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
         />
         <input
           name="phone"
-          placeholder="Phone"
+          value={form.phone}
+          placeholder="Phone Number"
+          type="tel"
           required
-          className="w-full border p-2"
           onChange={handleChange}
+          className="w-full border border-red-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
         />
         <input
           name="district"
+          value={form.district}
           placeholder="District"
           required
-          className="w-full border p-2"
           onChange={handleChange}
+          className="w-full border border-red-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
         />
         <input
           name="city"
+          value={form.city}
           placeholder="City"
           required
-          className="w-full border p-2"
           onChange={handleChange}
+          className="w-full border border-red-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
         />
         <textarea
           name="notes"
-          placeholder="Notes (Optional)"
-          className="w-full border p-2"
+          value={form.notes}
+          placeholder="Additional Notes (Optional)"
           onChange={handleChange}
+          rows={4}
+          className="w-full border border-red-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
         />
+
         <button
           type="submit"
-          className="bg-red-500 text-white px-4 py-2 rounded"
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition"
         >
-          Request Blood
+          Submit Request
         </button>
       </form>
     </div>
