@@ -11,9 +11,9 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="relative z-10">
+      {/* <div className="relative z-10">
         <Navbar />
-      </div>
+      </div> */}
 
       <div className="flex items-center justify-end h-full z-10 relative px-10 pl-72">
         <div className="w-1/2 space-y-6">
