@@ -1,6 +1,7 @@
 import { PrismaClient, Role } from "@prisma/client";
 import { randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
+import { PrismaDonorModels } from "./donorModel";
 
 const prisma = new PrismaClient();
 
@@ -48,7 +49,6 @@ export const PrismaSqlModels = {
     if (!user) throw new Error("Invalid email or password");
 
     const { id, name } = user;
-
     const resolvedDeviceId = deviceId || "unknown_device";
 
     const accessToken = jwt.sign(
@@ -70,9 +70,7 @@ export const PrismaSqlModels = {
       { expiresIn: REFRESH_EXPIRES_IN }
     );
 
-    await prisma.refreshToken.deleteMany({
-      where: { userId: id },
-    });
+    await prisma.refreshToken.deleteMany({ where: { userId: id } });
 
     await prisma.refreshToken.create({
       data: {
@@ -82,10 +80,20 @@ export const PrismaSqlModels = {
       },
     });
 
+    // Fetch donor info linked to this user
+    const donor = await prisma.donor.findUnique({
+      where: { userId: id },
+      select: {
+        id: true,
+        // You can select more fields if needed
+      },
+    });
+
     return {
       accessToken,
       refreshToken,
       user: { id, name, email },
+      donorId: donor?.id || null, // Return donor id or null if not found
     };
   },
 
