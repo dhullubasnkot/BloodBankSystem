@@ -5,7 +5,10 @@ const prisma = new PrismaClient();
 // Blood Request Create:
 async function createRequestBloodModal(data: {
   // id: string;
+
   userId: string;
+  name: string;
+  phone: string;
   bloodGroup: BloodGroup;
   district: string;
   city: string;
@@ -16,7 +19,10 @@ async function createRequestBloodModal(data: {
   const createRequest = await prisma.requestBlood.create({
     data: {
       id: randomUUID(),
+
       userId: data.userId,
+      name: data.name,
+      phone: data.phone,
       bloodGroup: data.bloodGroup,
       district: data.district,
       city: data.city,
@@ -46,6 +52,8 @@ async function getRequestByIDModal(userId: string) {
 // update Request by UserID
 async function updateBloodRequestModal(data: {
   userId: string;
+  name: string;
+  phone: string;
   bloodGroup?: BloodGroup;
   district?: string;
   city?: string;
@@ -59,6 +67,7 @@ async function updateBloodRequestModal(data: {
     },
     data: {
       bloodGroup: data.bloodGroup,
+      phone: data.phone,
       district: data.district,
       city: data.city,
       status: data.status,
