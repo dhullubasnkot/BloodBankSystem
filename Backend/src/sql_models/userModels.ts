@@ -45,57 +45,58 @@ export const PrismaSqlModels = {
   },
 
   async login(email: string, password: string, deviceId?: string) {
-    const user = await this.checkUserCredentials(email, password);
-    if (!user) throw new Error("Invalid email or password");
+  const user = await this.checkUserCredentials(email, password);
+  if (!user) throw new Error("Invalid email or password");
 
-    const { id, name } = user;
-    const resolvedDeviceId = deviceId || "unknown_device";
+  const { id, name } = user;
+  const resolvedDeviceId = deviceId || "unknown_device";
 
-    const accessToken = jwt.sign(
-      { id, name, email, deviceId: resolvedDeviceId, type: "access" },
-      JWT_SECRET,
-      { expiresIn: ACCESS_EXPIRES_IN }
-    );
+  const accessToken = jwt.sign(
+    { id, name, email, deviceId: resolvedDeviceId, type: "access" },
+    JWT_SECRET,
+    { expiresIn: ACCESS_EXPIRES_IN }
+  );
 
-    const refreshToken = jwt.sign(
-      {
-        id,
-        name,
-        email,
-        type: "refresh",
-        jti: randomUUID(),
-        deviceId: resolvedDeviceId,
-      },
-      JWT_REFRESH_SECRET,
-      { expiresIn: REFRESH_EXPIRES_IN }
-    );
+  const refreshToken = jwt.sign(
+    {
+      id,
+      name,
+      email,
+      type: "refresh",
+      jti: randomUUID(),
+      deviceId: resolvedDeviceId,
+    },
+    JWT_REFRESH_SECRET,
+    { expiresIn: REFRESH_EXPIRES_IN }
+  );
 
-    await prisma.refreshToken.deleteMany({ where: { userId: id } });
+  await prisma.refreshToken.deleteMany({ where: { userId: id } });
 
-    await prisma.refreshToken.create({
-      data: {
-        rtoken: refreshToken,
-        userId: id,
-        deviceId: resolvedDeviceId,
-      },
-    });
+  await prisma.refreshToken.create({
+    data: {
+      rtoken: refreshToken,
+      userId: id,
+      deviceId: resolvedDeviceId,
+    },
+  });
 
-    // Fetch donor info linked to this user
-    const donor = await prisma.donor.findUnique({
-      where: { userId: id },
-      select: {
-        id: true,
-        // You can select more fields if needed
-      },
-    });
+ 
+  const donor = await prisma.donor.findUnique({
+    where: { userId: id },
+    select: {
+      id: true,
+      
+    },
+  });
 
-    return {
-      accessToken,
-      refreshToken,
-      user: { id, name, email },
-      donorId: donor?.id || null, // Return donor id or null if not found
-    };
-  },
+  return {
+    accessToken,
+    refreshToken,
+    user: { id, name, email },
+    donorId: donor?.id || null,
+  };
+},
+
 
   async LogoutModel(userId: string, deviceId?: string) {
     await prisma.refreshToken.deleteMany({
