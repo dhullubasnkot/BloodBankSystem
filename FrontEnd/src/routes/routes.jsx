@@ -13,6 +13,7 @@ import FindBloodDashboard from "../pages/ShowAllDonorAndRequester";
 const AppRoutes = () => (
   <>
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<HeroSection />} />
         <Route path="/DonorandRequetedBlood" element={<FindBloodDashboard />} />
