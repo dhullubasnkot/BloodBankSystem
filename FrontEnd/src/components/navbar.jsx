@@ -15,8 +15,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await LogoutUser();
-      console.log(response);
+      await LogoutUser();
       window.location.href = "/";
     } catch (error) {
       console.error("Logout failed:", error);
@@ -24,50 +23,58 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="w-full px-10 pt-6">
+    <nav className="w-full px-10 pt-6 bg-gradient-to-br from-red-50 via-white to-red-100 shadow-sm sticky top-0 z-50">
       <div className="max-w-[1316px] mx-auto flex items-center justify-between h-[71px]">
-        <a href="/">
-          <div className="h-[100px] w-[100px] mb-2">
+        <a href="/" aria-label="Home">
+          <div className="h-[40px] w-[40px] mb-2">
             <img
               src="/Logooo.png"
-              alt="logo"
+              alt="Blood Bank Logo"
               className="h-full w-full object-contain"
             />
           </div>
-          {/* navbar */}
         </a>
-        <div className="flex gap-10 font-medium text-[16px]">
-          <a href="/" className="hover:text-red-600 transition">
+
+        <div className="flex items-center gap-10 font-medium text-[16px] text-gray-800">
+          <a
+            href="/"
+            className="hover:text-red-600 transition-colors duration-200"
+          >
             Home
           </a>
-          <a href="/RequestBlood" className="hover:text-red-600 transition">
+          <a
+            href="/RequestBlood"
+            className="hover:text-red-600 transition-colors duration-200"
+          >
             Request Blood
           </a>
           <a
             href="/DonorandRequetedBlood"
-            className="hover:text-red-600 transition"
+            className="hover:text-red-600 transition-colors duration-200"
           >
             Find Blood
           </a>
 
-          {/* Show "Register Now" only if logged in and not yet donor */}
+          {/* Show "Register Now" only if logged in but not a donor */}
           {isLoggedIn && !isDonorRegistered && (
-            <a href="/BeaDonor" className="hover:text-red-600 transition">
+            <a
+              href="/BeaDonor"
+              className="hover:text-red-600 transition-colors duration-200"
+            >
               Register Now
             </a>
           )}
 
-          {!isLoggedIn && (
+          {!isLoggedIn ? (
             <a href="/Register">
-              <button className="px-5 py-2 border border-black rounded-md font-medium hover:bg-black hover:text-white transition mb-5">
+              <button className="px-5 py-2 border border-black rounded-md font-medium hover:bg-black hover:text-white transition-colors duration-200">
                 Log In
               </button>
             </a>
-          )}
-          {isLoggedIn && (
+          ) : (
             <button
               onClick={handleLogout}
-              className="px-5 py-2 border border-black rounded-md font-medium hover:bg-black hover:text-white transition mb-5"
+              className="px-5 py-2 border border-black rounded-md font-medium hover:bg-black hover:text-white transition-colors duration-200"
             >
               Logout
             </button>
