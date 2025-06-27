@@ -1,6 +1,5 @@
 import { useState } from "react";
 import CreateDonors from "../api/donors/registerAsDonors";
-import Navbar from "../components/navbar";
 
 export default function RegisterAsDonor() {
   const bloodGroups = [
@@ -53,7 +52,6 @@ export default function RegisterAsDonor() {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-10 px-4">
         <div className="max-w-lg w-full bg-white shadow-md rounded-lg p-8">
           <h2 className="text-2xl font-bold text-red-600 text-center mb-6">
