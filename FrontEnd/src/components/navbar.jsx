@@ -7,9 +7,10 @@ export default function Navbar() {
 
   useEffect(() => {
     const id = localStorage.getItem("id");
-    const isDonor = localStorage.getItem("isDonor");
+    const Donor_Id = localStorage.getItem("Donor_id");
+
     setIsLoggedIn(!!id);
-    setIsDonorRegistered(isDonor === "true");
+    setIsDonorRegistered(!!Donor_Id);
   }, []);
 
   const handleLogout = async () => {
