@@ -18,7 +18,7 @@ export default function OurCollaboration() {
         <h2 className="text-4xl font-bold mb-12 text-center text-red-700">
           Our Collaborators
         </h2>
-
+        {/* swiper */}
         <Swiper
           spaceBetween={30}
           slidesPerView={3}

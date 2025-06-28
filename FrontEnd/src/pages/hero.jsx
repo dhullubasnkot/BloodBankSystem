@@ -57,3 +57,5 @@ export default function HeroSection() {
     </section>
   );
 }
+
+// hero section
