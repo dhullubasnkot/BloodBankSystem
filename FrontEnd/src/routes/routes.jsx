@@ -28,3 +28,4 @@ const AppRoutes = () => (
 );
 
 export default AppRoutes;
+//Routes
