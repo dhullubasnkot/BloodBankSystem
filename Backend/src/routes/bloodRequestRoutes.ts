@@ -11,8 +11,8 @@ const bloodRequqestRouoter = Router();
 
 bloodRequqestRouoter.post("/", createBloodRequest);
 bloodRequqestRouoter.get("/", getBlooadRequestController);
-bloodRequqestRouoter.post("/get", getRequestByID);
 bloodRequqestRouoter.put("/", updateRequestController);
 bloodRequqestRouoter.post("/deleterequest", deleteRequestController);
+bloodRequqestRouoter.get("/:id", getRequestByID);
 
 export default bloodRequqestRouoter;
