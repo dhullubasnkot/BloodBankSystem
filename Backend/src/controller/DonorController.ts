@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaDonorModels } from "../sql_models/donorModel";
 import { BloodGroup } from "@prisma/client";
-
+//create donor
 export async function CreateDonorController(req: Request, res: Response) {
   try {
     const {
@@ -28,7 +28,7 @@ export async function CreateDonorController(req: Request, res: Response) {
     console.error("Error creating donor:", error);
   }
 }
-
+//search donor
 export async function SearchDonorController(req: Request, res: Response) {
   try {
     const { bloodGroup, district, city, available } = req.query;
@@ -45,7 +45,7 @@ export async function SearchDonorController(req: Request, res: Response) {
     console.log("Error Searching Donors:", error);
   }
 }
-
+//getalldonors
 export async function GetAllListedBloodDonorsController(
   req: Request,
   res: Response
@@ -58,7 +58,7 @@ export async function GetAllListedBloodDonorsController(
     console.error("Error fetching all listed blood donors:", error);
   }
 }
-
+//getdonorbyid
 export async function GetDonorById(req: Request, res: Response) {
   try {
     const { id } = req.params;
