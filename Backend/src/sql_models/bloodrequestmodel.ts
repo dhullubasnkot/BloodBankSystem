@@ -67,7 +67,7 @@ async function updateBloodRequestModal(data: {
     },
     data: {
       bloodGroup: data.bloodGroup,
-      phone:data.phone,
+      phone: data.phone,
       district: data.district,
       city: data.city,
       status: data.status,
