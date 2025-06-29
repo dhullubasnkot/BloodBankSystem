@@ -60,4 +60,17 @@ export const PrismaDonorModels = {
       },
     });
   },
+
+  async GetDonorById(id: string) {
+    return prisma.donor.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  },
 };
