@@ -9,6 +9,7 @@ import Register from "../auth/signup";
 import RegisterAsDonor from "../pages/RegisterAsDonor";
 import RequestBloodForm from "../pages/RequestBlood";
 import FindBloodDashboard from "../pages/ShowAllDonorAndRequester";
+import UserProfile from "../pages/userProfile";
 
 const AppRoutes = () => (
   <>
@@ -16,12 +17,12 @@ const AppRoutes = () => (
       <Navbar />
       <Routes>
         <Route path="/" element={<HeroSection />} />
-
         <Route path="/DonorandRequetedBlood" element={<FindBloodDashboard />} />
         <Route path="/findblood" element={<FindBlood />} />
         <Route path="/BeaDonor" element={<RegisterAsDonor />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/RequestBlood" element={<RequestBloodForm />} />
+        <Route path="/userProfile" element={<UserProfile />} />
       </Routes>
     </Router>
   </>
