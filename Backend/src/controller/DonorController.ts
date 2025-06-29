@@ -58,3 +58,22 @@ export async function GetAllListedBloodDonorsController(
     console.error("Error fetching all listed blood donors:", error);
   }
 }
+
+export async function GetDonorById(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      res.status(400).json({ error: "Donor ID is required" });
+      return;
+    }
+    const donor = await PrismaDonorModels.GetDonorById(id);
+    if (!donor) {
+      res.status(404).json({ error: "Donor not found" });
+      return;
+    }
+    res.status(200).json(donor);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch donor by ID" });
+    console.error("Error fetching donor by ID:", error);
+  }
+}
