@@ -12,6 +12,7 @@ const RequestedBloodList = () => {
   const [donatedIds, setDonatedIds] = useState([]);
 
   const Donor_Id = localStorage.getItem("Donor_id");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,9 +32,8 @@ const RequestedBloodList = () => {
 
         const donations = allDonationsStats.donationDetails || [];
 
-        const donatedToIds = donations
-          .filter((donation) => donation.donorId === Donor_Id)
-          .map((donation) => donation.requestId);
+        // ✅ Global: Get all requestIds that are already donated to
+        const donatedToIds = donations.map((donation) => donation.requestId);
 
         setDonatedIds(donatedToIds);
       } catch (err) {
@@ -82,6 +82,8 @@ const RequestedBloodList = () => {
               donor?.bloodGroup?.toUpperCase() ===
               request.bloodGroup?.toUpperCase();
 
+            const alreadyDonated = donatedIds.includes(request.id);
+
             return (
               <div
                 key={request.id}
@@ -106,19 +108,18 @@ const RequestedBloodList = () => {
                   <strong>Requested On:</strong>{" "}
                   {new Date(request.requestedAt).toLocaleDateString()}
                 </p>
-
                 {!donorLoading && donor ? (
                   isMatch ? (
                     <button
                       onClick={() => handleDonate(request)}
-                      disabled={donatedIds.includes(request.id)}
+                      disabled={alreadyDonated}
                       className={`mt-4 w-full px-4 py-2 rounded font-semibold ${
-                        donatedIds.includes(request.id)
+                        alreadyDonated
                           ? "bg-gray-300 text-gray-600 cursor-not-allowed"
                           : "bg-green-600 text-white hover:bg-green-700"
                       }`}
                     >
-                      {donatedIds.includes(request.id)
+                      {alreadyDonated
                         ? "✅ Already Donated"
                         : "✅ I Can Donate"}
                     </button>
