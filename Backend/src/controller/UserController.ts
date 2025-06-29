@@ -1,6 +1,6 @@
 import { PrismaSqlModels } from "../sql_models/userModels";
 import { Request, Response } from "express";
-
+//create user
 export async function CreateUserController(req: Request, res: Response) {
   const { name, email, phone, password, role, isDonor } = req.body;
   try {
@@ -22,7 +22,7 @@ export async function CreateUserController(req: Request, res: Response) {
     res.status(500).json({ message: "Failed to create user" });
   }
 }
-
+//login controller
 export async function loginController(req: Request, res: Response) {
   try {
     const { email, password, deviceId } = req.body;
@@ -56,7 +56,7 @@ export async function loginController(req: Request, res: Response) {
     res.status(401).json({ message: "Invalid Email Or Password" });
   }
 }
-
+//logout controller
 export async function LogoutController(req: Request, res: Response) {
   try {
     res.clearCookie("auth_token", {
