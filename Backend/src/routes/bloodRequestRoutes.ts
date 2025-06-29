@@ -9,7 +9,7 @@ import {
 
 const bloodRequqestRouoter = Router();
 
-bloodRequqestRouoter.post("/", createBloodRequest);
+bloodRequqestRouoter.post("/", createBloodRequest); //create Blood Requestt
 bloodRequqestRouoter.get("/", getBlooadRequestController);
 bloodRequqestRouoter.put("/", updateRequestController);
 bloodRequqestRouoter.post("/deleterequest", deleteRequestController);
