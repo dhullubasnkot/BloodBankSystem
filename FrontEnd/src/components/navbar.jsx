@@ -54,6 +54,12 @@ export default function Navbar() {
           >
             Find Blood
           </a>
+          <a
+            href="/userProfile"
+            className="hover:text-red-600 transition-colors duration-200"
+          >
+            Your Profile
+          </a>
 
           {/* Show "Register Now" only if logged in but not a donor */}
           {isLoggedIn && !isDonorRegistered && (
