@@ -6,27 +6,35 @@ import GetAllRequestedBlood from "../api/RequestBlood/getAllBloodRequest";
 export default function UserProfile() {
   const [donorData, setDonorData] = useState(null);
   const [donations, setDonations] = useState([]);
-  const [requests, setRequests] = useState([]);
+  const [allRequests, setAllRequests] = useState([]);
+  const [userRequests, setUserRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const donorId = localStorage.getItem("Donor_id");
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const donor = await GetDonorByIds();
         const allDonations = await GetAllDonationStats();
-        const allRequests = await GetAllRequestedBlood();
+        const allRequestsRes = await GetAllRequestedBlood();
 
         const donationDetails = allDonations?.donationDetails || [];
         const currentDonorDonations = donationDetails.filter(
           (d) => String(d.donorId) === String(donorId)
         );
 
+        const allReq = allRequestsRes.data || [];
+        const myRequests = allReq.filter(
+          (r) => String(r.userId) === String(userId)
+        );
+
         setDonorData(donor);
-        setRequests(allRequests.data || []);
+        setAllRequests(allReq);
         setDonations(currentDonorDonations);
+        setUserRequests(myRequests);
       } catch (err) {
         setError(err.message || "Failed to load data");
       } finally {
@@ -35,7 +43,7 @@ export default function UserProfile() {
     };
 
     fetchData();
-  }, [donorId]);
+  }, [donorId, userId]);
 
   if (loading) return <div className="p-4">Loading user profile...</div>;
   if (error) return <div className="text-red-500 p-4">Error: {error}</div>;
@@ -62,18 +70,18 @@ export default function UserProfile() {
       )}
 
       <h3 className="text-xl font-semibold mb-4">📝 Donations You Made</h3>
-
       {donations.length === 0 ? (
         <p className="text-gray-500">You haven’t donated yet.</p>
       ) : (
         <div className="space-y-4">
           {donations.map((donation, idx) => {
-            const request = requests.find((r) => r.id === donation.requestId);
-
+            const request = allRequests.find(
+              (r) => r.id === donation.requestId
+            );
             return (
               <div
                 key={idx}
-                className="border border-gray-200 p-4 rounded shadow-sm"
+                className="border p-4 rounded shadow-sm bg-gray-50"
               >
                 <p>
                   <strong>Recipient:</strong> {request?.name || "Unknown"}
@@ -94,6 +102,41 @@ export default function UserProfile() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      <h3 className="text-xl font-semibold mt-10 mb-4">
+        📋 Your Blood Requests
+      </h3>
+      {userRequests.length === 0 ? (
+        <p className="text-gray-500">You haven’t requested any blood yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {userRequests.map((request, idx) => (
+            <div key={idx} className="border p-4 rounded shadow-sm bg-red-50">
+              <p>
+                <strong>Name:</strong> {request.name}
+              </p>
+              <p>
+                <strong>Blood Group:</strong> {request.bloodGroup}
+              </p>
+              <p>
+                <strong>Phone:</strong> {request.phone}
+              </p>
+              <p>
+                <strong>Location:</strong> {request.district}, {request.city}
+              </p>
+              <p>
+                <strong>Requested At:</strong>{" "}
+                {request.requestedAt
+                  ? new Date(request.requestedAt).toLocaleDateString()
+                  : "N/A"}
+              </p>
+              <p>
+                <strong>Notes:</strong> {request.notes || "N/A"}
+              </p>
+            </div>
+          ))}
         </div>
       )}
     </div>
