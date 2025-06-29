@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createDonation, getDonorStats } from "../sql_models/DonationStats";
 import { GetAllDonationStats } from "../sql_models/DonationStats";
+//create donation
 export const donateController = async (req: Request, res: Response) => {
   try {
     const { donorId, requesterId, requestId, location, notes } = req.body;
@@ -19,7 +20,7 @@ export const donateController = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to record donation" });
   }
 };
-
+//get all donation
 export const donorStatsController = async (req: Request, res: Response) => {
   try {
     const { donorId } = req.params;
