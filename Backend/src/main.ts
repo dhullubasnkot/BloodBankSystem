@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
 import DonorRoutes from "./routes/DonorRoutes";
+import DonationStatsRoutes from "./routes/DonationStatsRoutes";
 import cookieParser from "cookie-parser";
 import bloodRequqestRouoter from "./routes/bloodRequestRoutes";
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use("/user", userRoutes);
 app.use("/donor", DonorRoutes);
 app.use("/bloodrequest", bloodRequqestRouoter);
+app.use("/donation", DonationStatsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
