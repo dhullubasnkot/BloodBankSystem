@@ -9,8 +9,8 @@ import { authenticateToken } from "../middleware/auth";
 
 const router = express.Router();
 
-router.post("/", CreateDonorController);
-router.get("/search", SearchDonorController);
-router.get("/", authenticateToken, GetAllListedBloodDonorsController);
-router.get("/:id", GetDonorById);
+router.post("/", CreateDonorController); //CreateDonorController
+router.get("/search", SearchDonorController); //Search Donor Controller
+router.get("/", authenticateToken, GetAllListedBloodDonorsController); //GetAllListedBloodDonorController
+router.get("/:id", GetDonorById); //GetDonorById
 export default router;
